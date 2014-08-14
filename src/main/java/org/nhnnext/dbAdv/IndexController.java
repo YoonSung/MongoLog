@@ -2,6 +2,8 @@ package org.nhnnext.dbAdv;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -27,16 +29,16 @@ public class IndexController extends HttpServlet {
 		//TODO Change Logger
 		System.out.println("Request In IndexController");
 		
-		mongoDBExample();
+		List<String> list = mongoDBExample();
 		
 		String nextJSP = "/index.jsp";
-		request.setAttribute("name", "Parameter!!");
+		request.setAttribute("list", list);
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
 		
 		dispatcher.forward(request,response);
 	}
 	
-	private void mongoDBExample() throws UnknownHostException {
+	private List<String> mongoDBExample() throws UnknownHostException {
 		MongoClient mongoClient = new MongoClient("10.73.45.65");
 		DB db = mongoClient.getDB("yoondb");
 		
@@ -60,10 +62,13 @@ public class IndexController extends HttpServlet {
 		DBObject one = coll.findOne();
 		System.out.println(one);
 		
+		List<String> result = new ArrayList<String>();
+		
 		//find all
 		DBCursor cursor = coll.find();
 		while (cursor.hasNext()) {
-			System.out.println(cursor.next());
+//			System.out.println(cursor.next());
+			result.addAll( (List<String>)cursor.next() );
 		}
 		
 		//find specific object 1
@@ -71,7 +76,8 @@ public class IndexController extends HttpServlet {
 		DBCursor cursor2 = coll.find(search);
 		
 		while (cursor2.hasNext()) {
-			System.out.println(cursor2.next());
+//			System.out.println(cursor2.next());
+			result.addAll( (List<String>)cursor2.next() );
 		}
 		
 		//find specific object 2
@@ -79,8 +85,11 @@ public class IndexController extends HttpServlet {
 		DBCursor cursor3 = coll.find(search2);
 		
 		while (cursor3.hasNext()) {
-			System.out.println(cursor3.next());
+//			System.out.println(cursor3.next());
+			result.addAll( (List<String>)cursor3.next() );
 		}
+		
+		return result;
 	}
 
 	@Override
