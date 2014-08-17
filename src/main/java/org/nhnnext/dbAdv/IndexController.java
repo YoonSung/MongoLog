@@ -68,7 +68,8 @@ public class IndexController extends HttpServlet {
 		DBCursor cursor = coll.find();
 		while (cursor.hasNext()) {
 //			System.out.println(cursor.next());
-			result.addAll( (List<String>)cursor.next() );
+			
+			result.add( cursor.next().toString() );
 		}
 		
 		//find specific object 1
@@ -77,7 +78,7 @@ public class IndexController extends HttpServlet {
 		
 		while (cursor2.hasNext()) {
 //			System.out.println(cursor2.next());
-			result.addAll( (List<String>)cursor2.next() );
+			result.add( cursor2.next().toString() );
 		}
 		
 		//find specific object 2
@@ -86,7 +87,7 @@ public class IndexController extends HttpServlet {
 		
 		while (cursor3.hasNext()) {
 //			System.out.println(cursor3.next());
-			result.addAll( (List<String>)cursor3.next() );
+			result.add( cursor3.next().toString() );
 		}
 		
 		return result;
