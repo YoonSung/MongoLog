@@ -1,18 +1,36 @@
 package org.nhnnext.dbAdv;
 
 public class Post {
-	private int id;
+	private String id;
 	private String title;
 	private String writer;
 	private String content;
 	private String timestamp;
 	
-	public int getId() {
+	public Post(String title, String writer, String content) {
+		this.title = title;
+		this.writer = writer;
+		this.content = content;
+	}
+	
+	public Post(String id, String title, String writer, String content,
+			String timestamp) {
+		
+		this.id = id;
+		this.title = title;
+		this.writer = writer;
+		this.content = content;
+		this.timestamp = timestamp;
+	}
+
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+
+	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
