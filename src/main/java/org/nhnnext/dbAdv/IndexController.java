@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bson.types.ObjectId;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.WriteResult;
 
 @SuppressWarnings("serial")
 public class IndexController extends HttpServlet {
@@ -38,7 +41,17 @@ public class IndexController extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
+		String id = request.getParameter("id");
+		
+		//if request delete Post
+		if (id != null && !id.equalsIgnoreCase("")) {
+			System.out.println("Delete Request");
+			deletePost(id);
+			response.sendRedirect("/");
+			return;
+		}
+		
 		// TODO Change Logger
 		System.out.println("Request In IndexController");
 
@@ -55,8 +68,19 @@ public class IndexController extends HttpServlet {
 
 	
 	
+	private void deletePost(String id) {
+		DBCollection coll = db.getCollection("post");
+		BasicDBObject dbObject = new BasicDBObject("_id", new ObjectId(id));
+		
+		WriteResult result = coll.remove(dbObject);
+		System.out.println("Delete Row Num : "+result.getN());
+	}
+
+
+
 	private List<Post> realServerTest() throws UnknownHostException {
 		DBCollection coll = db.getCollection("post");
+		
 		//coll.drop();
 
 		// insert Test
@@ -73,6 +97,7 @@ public class IndexController extends HttpServlet {
 		DBCursor cursor = coll.find();
 		while (cursor.hasNext()) {
 			DBObject dbObject = cursor.next();
+			
 			Post post = new Post(
 				dbObject.get("_id").toString(),
 				dbObject.get("title").toString(),

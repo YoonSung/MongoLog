@@ -46,7 +46,7 @@
 					itemtype="http://schema.org/BlogPosting">
 				<meta content="en" itemprop="inLanguage" />
 
-				<a href="/delete?id=${result._id}" class="post-comments" title="comments">
+				<a href="/?id=${result.id}" class="post-comments" title="comments">
 			<i class="icon-comment">X</i></a>
 				<h2 itemprop="headline">
 					<a href="#">${result.title}</a>
